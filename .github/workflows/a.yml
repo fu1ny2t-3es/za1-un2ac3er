@@ -1,0 +1,23 @@
+on:
+  # push:
+  workflow_dispatch:
+    inputs:
+      remote_repo:
+      remote_branch:
+      target_branch:
+
+
+jobs:
+
+  clone-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: li1ht2ay-3es/gi1-ac2io3s@clone-branch
+        with:
+          remote_repo: ${{ inputs.remote_repo }}
+          remote_branch: ${{ inputs.remote_branch }}
+          target_branch: ${{ inputs.target_branch }}
+
+          auto: true
+          token: ${{ secrets.token }}
