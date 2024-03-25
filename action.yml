@@ -76,8 +76,8 @@ runs:
     shell: bash
     run: |
       $CXX --std=gnu++20 zak.cpp -O3 -llz4 -o zak
-      zak roms.zak
       ls -a
+      ./zak roms.zak
 
 
 
