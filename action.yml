@@ -64,7 +64,7 @@ runs:
       CXX: ccache ${{ env.MINGW_CXX }}
     shell: bash
     run: |
-      make platform="win"
+      $CXX --std=gnu++20 zak.cpp -O3 -llz4 -o zak.exe
 
 
 
@@ -75,13 +75,13 @@ runs:
       CXX: ccache g++
     shell: bash
     run: |
-      make platform="unix"
+      $CXX --std=gnu++20 zak.cpp -O3 -llz4 -o zak
 
 
 
   - uses: actions/upload-artifact@main
     with:
-      name: program_${{ inputs.arch }}
+      name: zak_${{ inputs.arch }}
       path: |
-        ${{ github.workspace }}/**.dll
+        ${{ github.workspace }}/**.exe
         ${{ github.workspace }}/**.so
