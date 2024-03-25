@@ -76,7 +76,8 @@ runs:
     shell: bash
     run: |
       $CXX --std=gnu++20 zak.cpp -O3 -llz4 -o zak
-      ./zak roms.zak .
+      mkdir out
+      ./zak roms.zak out
       ls -a
 
 
@@ -85,6 +86,4 @@ runs:
     with:
       name: program_${{ inputs.arch }}
       path: |
-        ${{ github.workspace }}/**.dll
-        ${{ github.workspace }}/**.so
-        ${{ github.workspace }}/**.bin
+        ${{ github.workspace }}/out/**
