@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: li1ht2ay-3es/te1pl2te@cron
+      - uses: li1ht2ay-3es/za1-un2ac3er@cron
         with:
           token: ${{ secrets.token }}
