@@ -5,7 +5,6 @@
 #include <lz4.h>
 #include <string_view>
 #include <filesystem>
-#include <comdef.h>
 
 /* Buffers. */
 namespace {
@@ -513,7 +512,7 @@ int main(int argc, char** argv) {
 	}
 
 	const char* inputPath = argv[1];
-	std::filesystem::path outputPath(argv[2]);
+	auto outputPath = std::filesystem::path(argv[2]);
 
 	printf("Reading...\n");
 	auto input = ReadFile(inputPath);
@@ -523,12 +522,12 @@ int main(int argc, char** argv) {
 	ctx.Decrypt(input);
 
     printf("Writing compressed zak...\n");
-	create_directories(outputPath);
-    WriteFile((outputPath.string() + "/compressed_decrypted.zak").c_str(), input);
+    WriteFile((outputPath / "compressed_decrypted.zak").c_str(), input);
 
 	printf("Decompressing...\n");
 	auto zakData = Decompress(input);
-	
+	create_directories(outputPath);
+
 	auto header = reinterpret_cast<zak::Header*>(zakData.data());
 	if(header->mMagic == zak::Header::sMagic) {
 		printf("Extracting...\n");
@@ -538,11 +537,10 @@ int main(int argc, char** argv) {
 			printf("Writing %s...\n", str.c_str());
 
 			auto path = outputPath / str;
-			auto newpath =  outputPath.string()  + "/" + str;
             create_directories(path.parent_path());
-			
+
 			auto fileData = std::span<std::byte> { header->Data() + file->mOffset, file->mSize };
-			WriteFile(newpath.c_str(), fileData);
+			WriteFile(path.c_str(), fileData);
 
 			file = file->Next();
 		}
@@ -551,7 +549,7 @@ int main(int argc, char** argv) {
 	}
 
 	printf("Writing decompressed zak...\n");
-	WriteFile((outputPath.string() + "/compressed_decrypted.zak").c_str(), zakData);
+	WriteFile((outputPath / "decompressed_decrypted.zak").c_str(), zakData);
 
 	free(zakData.data());
 	free(input.data());
