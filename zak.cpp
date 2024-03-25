@@ -1,5 +1,3 @@
-/* from no-intro */
-
 #include <cstdio>
 #include <bit>
 #include <cstdlib>
